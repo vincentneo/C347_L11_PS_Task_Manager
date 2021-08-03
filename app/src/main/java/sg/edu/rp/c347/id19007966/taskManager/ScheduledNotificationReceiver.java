@@ -61,6 +61,8 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
         views.setTextViewText(R.id.textViewTitle, "Task Manager Reminder");
         views.setTextViewText(R.id.textViewSubtitle, data);
         views.setImageViewBitmap(R.id.imageViewSideIcon, sideIco);
+        builder.setCustomContentView(views);
+        builder.setCustomBigContentView(views);
         builder.setCustomHeadsUpContentView(views);
 
         Notification n = builder.build();
