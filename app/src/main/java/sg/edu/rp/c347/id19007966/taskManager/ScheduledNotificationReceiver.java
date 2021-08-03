@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 
@@ -43,8 +44,7 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default");
-        builder.setContentTitle("Task Manager Reminder");
-        builder.setContentText(data);
+
         builder.setSmallIcon(android.R.drawable.ic_dialog_info);
         builder.setContentIntent(pIntent);
         builder.setAutoCancel(true);
@@ -54,9 +54,14 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
         builder.setSound(uri);
         builder.setLights(Color.BLUE, 2000, 1000);
         builder.setPriority(Notification.PRIORITY_HIGH);
-
         Bitmap image = BitmapFactory.decodeResource(context.getResources(), R.drawable.sentosa);
-        builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(image));
+        Bitmap sideIco = BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_dialog_map);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.notification_image);
+        views.setImageViewBitmap(R.id.imageView, image);
+        views.setTextViewText(R.id.textViewTitle, "Task Manager Reminder");
+        views.setTextViewText(R.id.textViewSubtitle, data);
+        views.setImageViewBitmap(R.id.imageViewSideIcon, sideIco);
+        builder.setCustomHeadsUpContentView(views);
 
         Notification n = builder.build();
         notificationManager.notify(reqCode, n);
