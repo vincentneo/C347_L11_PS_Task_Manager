@@ -11,6 +11,10 @@ public class Task implements Serializable {
         this.name = name;
         this.description = description;
     }
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public int getId() {
         return id;

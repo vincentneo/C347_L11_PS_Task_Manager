@@ -1,38 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
-    tools:context=".MainActivity">
-
+    tools:context=".AddActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Task Name:" />
+        android:text="Name" />
 
     <EditText
-        android:id="@+id/editTextTaskname"
+        android:id="@+id/etName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Description:" />
+        android:text="Description" />
 
     <EditText
-        android:id="@+id/editTextDescr"
+        android:id="@+id/etDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/tvRemind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:text="Remind in seconds" />
+
+    <EditText
+        android:id="@+id/etRemind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -40,21 +48,22 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/buttonAdd"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnAddTask"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Add Task" />
 
         <Button
-            android:id="@+id/buttonCancel"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnCancel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Cancel" />
-
     </LinearLayout>
-
 
 </LinearLayout>
