@@ -28,44 +28,29 @@ public class AddActivity extends AppCompatActivity {
         etDescription = (EditText) findViewById(R.id.etDescription);
         btnAddTask = (Button) findViewById(R.id.btnAddTask);
         btnCancel = (Button) findViewById(R.id.btnCancel);
-        final int reqCode = 12345;
 
         etRemind = (EditText) findViewById(R.id.etRemind);
 
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent i = new Intent();
+            public void onClick(View view) {
                 String name = etName.getText().toString();
-                String description = etDescription.getText().toString();
-                String reminder = etRemind.getText().toString();
-                int reminderTime = Integer.parseInt(reminder);
+                String desc = etDescription.getText().toString();
+                DBHelper dbh = new DBHelper(AddActivity.this);
+                long row_affected = dbh.insertTask(name, desc);
+                dbh.close();
+                if (row_affected != -1) {
+                    showNotification(Integer.parseInt(etRemind.getText().toString()));
+                    Toast.makeText(AddActivity.this, "Added successfully",
+                            Toast.LENGTH_SHORT).show();
+                    etName.setText("");
+                    etDescription.setText("");
+                    etRemind.setText("");
+                    Intent i = new Intent();
+                    setResult(RESULT_OK, i);
 
-                DBHelper db = new DBHelper(AddActivity.this);
-                db.insertTask(name, description);
-                Task task = new Task(name, description);
-                i.putExtra("task", task);
-                setResult(RESULT_OK, i);
-                // Go back 1st page
-                finish();
-
-                Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.SECOND, reminderTime);
-
-                Intent intent = new Intent(AddActivity.this,
-                        ScheduledNotificationReceiver.class);
-                intent.putExtra("name", name);
-
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                        AddActivity.this, reqCode,
-                        intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-                AlarmManager am = (AlarmManager)
-                        getSystemService(Activity.ALARM_SERVICE);
-                am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
-                        pendingIntent);
-
-
+                    finish();
+                }
             }
         });
 
@@ -75,5 +60,22 @@ public class AddActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void showNotification(int time){
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, time);
+
+        Intent intent = new Intent(AddActivity.this, ScheduledNotificationReceiver.class);
+        intent.putExtra("data", etName.getText().toString());
+        int requestCode = 12345;
+        PendingIntent pIntent = PendingIntent.getBroadcast(AddActivity.this, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        AlarmManager am = (AlarmManager) getSystemService(Activity.ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pIntent);
+
+        setResult(RESULT_OK, intent);
+
+        finish();
     }
 }
