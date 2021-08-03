@@ -45,8 +45,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
+        android:layout_width="380dp"
         android:layout_height="0dp"
+        android:layout_gravity="center"
         android:layout_weight="1"
+        android:padding="5dp"
         app:srcCompat="@drawable/sentosa" />
+
 </LinearLayout>
