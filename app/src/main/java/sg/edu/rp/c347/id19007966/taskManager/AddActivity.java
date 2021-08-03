@@ -40,6 +40,10 @@ public class AddActivity extends AppCompatActivity {
                 long row_affected = dbh.insertTask(name, desc);
                 dbh.close();
                 if (row_affected != -1) {
+                    if (etRemind.getText().toString().trim().isEmpty()) {
+                        Toast.makeText(AddActivity.this, "Please input alert time in seconds", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     showNotification(Integer.parseInt(etRemind.getText().toString()));
                     Toast.makeText(AddActivity.this, "Added successfully",
                             Toast.LENGTH_SHORT).show();
