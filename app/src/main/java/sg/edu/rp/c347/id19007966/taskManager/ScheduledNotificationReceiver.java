@@ -7,6 +7,8 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -52,6 +54,9 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
         builder.setSound(uri);
         builder.setLights(Color.BLUE, 2000, 1000);
         builder.setPriority(Notification.PRIORITY_HIGH);
+
+        Bitmap image = BitmapFactory.decodeResource(context.getResources(), R.drawable.sentosa);
+        builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(image));
 
         Notification n = builder.build();
         notificationManager.notify(reqCode, n);
