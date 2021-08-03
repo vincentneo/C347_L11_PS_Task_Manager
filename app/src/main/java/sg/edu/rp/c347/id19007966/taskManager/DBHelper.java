@@ -25,7 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String creationQuery = "CREATE TABLE "
                 + TABLE_TASK
                 + "("
-                + COLUMN_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_NAME + " TEXT,"
                 + COLUMN_DESCRIPTION + " TEXT" + ")";
         db.execSQL(creationQuery);
