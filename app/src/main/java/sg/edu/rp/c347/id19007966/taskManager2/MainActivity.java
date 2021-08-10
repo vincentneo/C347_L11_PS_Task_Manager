@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     ListView lv;
     ArrayAdapter<String> aa;
     ArrayList<String> al;
+    ArrayList<Task> tasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         DBHelper db = new DBHelper(MainActivity.this);
         al = new ArrayList<String>();
         al = db.retrieveAllStrings();
+        tasks = db.retrieveAllTasks();
         db.close();
         aa = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,al);
         lv.setAdapter(aa);
@@ -42,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        lv.setOnItemClickListener((adapterView, view, i, l) -> {
+            Intent intent = new Intent(MainActivity.this, AddActivity.class);
+            intent.putExtra("task", tasks.get(i));
+            startActivity(intent);
+        });
+
     }
     @Override
     protected void onResume() {
@@ -49,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         DBHelper db = new DBHelper(MainActivity.this);
         al.clear();
         al.addAll(db.retrieveAllStrings());
+        tasks.clear();
+        tasks.addAll(db.retrieveAllTasks());
         db.close();
         aa.notifyDataSetChanged();
 

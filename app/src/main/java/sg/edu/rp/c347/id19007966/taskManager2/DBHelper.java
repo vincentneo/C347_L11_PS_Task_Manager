@@ -81,6 +81,17 @@ public class DBHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    public int update(int id, String name, String description) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_NAME, name);
+        cv.put(COLUMN_DESCRIPTION, description);
+        String condition = COLUMN_ID + "= ?";
+        String[] args = {String.valueOf(id)};
+        int result = db.update(TABLE_TASK, cv, condition, args);
+        return result;
+    }
+
     // TODO: @Muhammad, use this toString for your list
     public ArrayList<String> retrieveAllStrings() {
         ArrayList<Task> tasks = retrieveAllTasks();
