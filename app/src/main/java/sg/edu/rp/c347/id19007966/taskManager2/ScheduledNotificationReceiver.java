@@ -1,4 +1,4 @@
-package sg.edu.rp.c347.id19007966.taskManager;
+package sg.edu.rp.c347.id19007966.taskManager2;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -16,6 +16,7 @@ import android.os.Build;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.RemoteInput;
 
 public class ScheduledNotificationReceiver extends BroadcastReceiver {
 
@@ -44,7 +45,8 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default");
-
+        builder.setContentTitle("Task");
+        builder.setContentText(data);
         builder.setSmallIcon(android.R.drawable.ic_dialog_info);
         builder.setContentIntent(pIntent);
         builder.setAutoCancel(true);
@@ -64,6 +66,39 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
         builder.setCustomContentView(views);
         builder.setCustomBigContentView(views);
         builder.setCustomHeadsUpContentView(views);
+
+        NotificationCompat.Action action = new
+                NotificationCompat.Action.Builder(
+                R.mipmap.ic_launcher,
+                "Launch Task Manager",
+                pIntent).build();
+
+        Intent intentreply = new Intent(context, WatchService.class);
+        PendingIntent pendingIntentReply = PendingIntent.getService
+                (context, 0, intentreply,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+        RemoteInput ri = new RemoteInput.Builder("status")
+                .setLabel("Status report")
+                .setChoices(new String [] {"Completed"})
+                .build();
+
+        NotificationCompat.Action action2 = new
+                NotificationCompat.Action.Builder(
+                R.mipmap.ic_launcher,
+                "Reply",
+                pendingIntentReply)
+                .addRemoteInput(ri)
+                .build();
+
+        NotificationCompat.WearableExtender extender = new
+                NotificationCompat.WearableExtender();
+
+        extender.addAction(action);
+        extender.addAction(action2);
+
+        // Attach the action for Wear notification created above
+        builder.extend(extender);
 
         Notification n = builder.build();
         notificationManager.notify(reqCode, n);
