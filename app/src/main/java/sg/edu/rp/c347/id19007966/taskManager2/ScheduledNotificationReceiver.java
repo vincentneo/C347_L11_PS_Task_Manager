@@ -28,6 +28,7 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
         // an Intent broadcast.
 
         String data = intent.getStringExtra("data");
+        int id = intent.getIntExtra("id", -1);
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -74,6 +75,7 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
                 pIntent).build();
 
         Intent intentreply = new Intent(context, WatchService.class);
+        intentreply.putExtra("task_id", id);
         PendingIntent pendingIntentReply = PendingIntent.getService
                 (context, 0, intentreply,
                         PendingIntent.FLAG_UPDATE_CURRENT);

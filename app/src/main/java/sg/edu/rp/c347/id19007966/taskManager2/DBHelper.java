@@ -37,7 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertTask(String name, String description) {
+    public Task insertTask(String name, String description) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -47,7 +47,7 @@ public class DBHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_TASK, null, values);
         db.close();
 
-        return result;
+        return new Task((int) result, name, description);
     }
 
     public ArrayList<Task> retrieveAllTasks() {
@@ -71,6 +71,14 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return tasks;
+    }
+
+    public long deleteAt(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String condition = COLUMN_ID + "= ?";
+        String[] args = {String.valueOf(id)};
+        int result = db.delete(TABLE_TASK, condition, args);
+        return result;
     }
 
     // TODO: @Muhammad, use this toString for your list
