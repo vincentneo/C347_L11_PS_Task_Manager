@@ -40,7 +40,7 @@ public class AddActivity extends AppCompatActivity {
             btnAddTask.setText("Update");
             etName.setText(task.getName());
             etDescription.setText(task.getDescription());
-            etRemind.setHint("Optional: leave empty if do not want new notification");
+            etRemind.setHint("Optional: leave empty for no notification");
             btnDelete.setOnClickListener(view -> {
                 long result = dbh.deleteAt(task.getId());
                 if (result != -1) {

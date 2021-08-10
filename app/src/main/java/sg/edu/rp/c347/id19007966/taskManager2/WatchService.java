@@ -28,17 +28,36 @@ public class WatchService extends Service {
         DBHelper db = new DBHelper(getApplicationContext());
         Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
         int id = intent.getIntExtra("task_id", -1);
+        boolean addNew = intent.getBooleanExtra("isAdd", false);
 
-        if (remoteInput != null){
-            CharSequence reply = remoteInput.getCharSequence("status");
+        if (remoteInput != null) {
+            CharSequence reply = remoteInput.getCharSequence("userResponse");
+            String strReply = reply.toString();
             if (reply != null) {
-                String status = reply.toString();
-                if (status.equalsIgnoreCase("completed")) {
-                    delete(db, id);
+                if (addNew) {
+                    CharSequence replyDesc = remoteInput.getCharSequence("userResponse2");
+                    String strDesc = replyDesc.toString();
+                    if (replyDesc != null) {
+                        add(db, strReply, strDesc);
+                    }
+
+                }
+                else {
+                    if (strReply.equalsIgnoreCase("completed")) {
+                        delete(db, id);
+                    }
                 }
             }
         }
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void add(DBHelper db, String name, String description) {
+        Task task = db.insertTask(name, description);
+        if (task != null) {
+            NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.cancelAll(); // hide notification once done interacting
+        }
     }
 
     private void delete(DBHelper db, int id) {

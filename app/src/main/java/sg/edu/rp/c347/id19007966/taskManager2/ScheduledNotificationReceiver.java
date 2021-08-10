@@ -80,7 +80,7 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
                 (context, 0, intentreply,
                         PendingIntent.FLAG_UPDATE_CURRENT);
 
-        RemoteInput ri = new RemoteInput.Builder("status")
+        RemoteInput ri = new RemoteInput.Builder("userResponse")
                 .setLabel("Status report")
                 .setChoices(new String [] {"Completed"})
                 .build();
@@ -93,11 +93,35 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
                 .addRemoteInput(ri)
                 .build();
 
+        Intent intentAdd = new Intent(context, WatchService.class);
+        intentAdd.putExtra("task_id", id);
+        intentAdd.putExtra("isAdd", true);
+        PendingIntent pendingIntentAdd = PendingIntent.getService
+                (context, 0, intentAdd,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+        RemoteInput riAdd = new RemoteInput.Builder("userResponse")
+                .setLabel("New task's name")
+                .build();
+        RemoteInput ridesc = new RemoteInput.Builder("userResponse2")
+                .setLabel("New task's description")
+                .build();
+
+        NotificationCompat.Action action3 = new
+                NotificationCompat.Action.Builder(
+                R.mipmap.ic_launcher,
+                "Add Task",
+                pendingIntentReply)
+                .addRemoteInput(riAdd)
+                .addRemoteInput(ridesc)
+                .build();
+
         NotificationCompat.WearableExtender extender = new
                 NotificationCompat.WearableExtender();
 
         extender.addAction(action);
         extender.addAction(action2);
+        extender.addAction(action3);
 
         // Attach the action for Wear notification created above
         builder.extend(extender);
