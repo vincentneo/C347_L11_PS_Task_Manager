@@ -2,12 +2,16 @@ package sg.edu.rp.c347.id19007966.taskManager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -54,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        refreshList();
+    }
+
+    private void refreshList() {
         DBHelper db = new DBHelper(MainActivity.this);
         al.clear();
         al.addAll(db.retrieveAllStrings());
@@ -61,6 +69,20 @@ public class MainActivity extends AppCompatActivity {
         tasks.addAll(db.retrieveAllTasks());
         db.close();
         aa.notifyDataSetChanged();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_refresh) {
+            refreshList();
+        }
+        return false;
     }
 }
